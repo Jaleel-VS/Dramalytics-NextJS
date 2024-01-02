@@ -4,7 +4,7 @@ import { MongoClient, Db, Collection } from 'mongodb';
 import databaseConfig from './dbConfig';
 import { Show } from '../types/types';
 
-class MongoDBHelper {
+export class MongoDBHelper {
     private static _instance: MongoDBHelper | null;
     private client: MongoClient | null = null;
     private db: Db | null = null;
@@ -12,12 +12,13 @@ class MongoDBHelper {
     private allShowIds: string[] | null = null;
 
     private constructor() {
-        this.connect();
+        
     }
 
-    public static getInstance(): MongoDBHelper {
+    public static async getInstance(): Promise<MongoDBHelper> {
         if (!this._instance) {
             this._instance = new MongoDBHelper();
+            await this._instance.connect(); // Ensure connection before returning
         }
         return this._instance;
     }
@@ -25,7 +26,7 @@ class MongoDBHelper {
     private async connect(): Promise<void> {
         try {
             const dbConfig: databaseConfig = new databaseConfig();
-            const connectionUri: string | undefined = dbConfig.getConnectionString(); // Ensure this method is properly implemented
+            const connectionUri: string | undefined = dbConfig.getConnectionString();
             if (!connectionUri) {
                 throw new Error("No connection string");
             }
@@ -37,6 +38,7 @@ class MongoDBHelper {
             console.log("Connected to MongoDB");
         } catch (e) {
             console.error(`Failed to connect to MongoDB: ${e}`);
+            throw e; // Ensure that errors are thrown for the caller to handle
         }
     }
 
@@ -75,5 +77,6 @@ class MongoDBHelper {
     }
 }
 
-const db = MongoDBHelper.getInstance();
-export default db;
+
+
+

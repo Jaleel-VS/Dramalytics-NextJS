@@ -3,7 +3,6 @@
 class databaseConfig {
     DATABASE_NAME: string = "Dramalytics";
     COLLECTION_NAME: string = "Dramalytics";
-    // read from env
     USER_NAME: string | undefined = process.env.DB_USER_NAME;
     PASSWORD: string | undefined = process.env.DB_PASSWORD;
     SERVERLESS_INSTANCE: string = "serverlessinstance0.ksq2r.mongodb.net/?retryWrites=true&w=majority";
