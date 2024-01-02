@@ -2,6 +2,7 @@
 
 import { MongoClient, Db, Collection } from 'mongodb';
 import databaseConfig from './dbConfig';
+import { Show } from '../types/types';
 
 class MongoDBHelper {
     private static _instance: MongoDBHelper | null;
@@ -50,11 +51,11 @@ class MongoDBHelper {
         }
     }
 
-    public async addShow(showJson: any): Promise<void> {
+    public async addShow(showJson: Show): Promise<void> {
         try {
             await this.collection?.insertOne(showJson);
             if (this.allShowIds) {
-                this.allShowIds.push(showJson.show_id);
+                this.allShowIds.push(showJson.showId);
             }
         } catch (e) {
             console.error(`Failed to add show: ${e}`);
