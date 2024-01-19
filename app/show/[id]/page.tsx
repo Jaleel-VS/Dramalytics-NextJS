@@ -3,7 +3,9 @@
 
 import React, { useEffect, useState } from 'react'
 import { NextPage } from 'next';
-import { fetchShowDetails } from './fetchShowDetails.server';
+import { getSeriesFromApiCall } from './fetchShowDetails.server';
+import { Show, Episode } from '@/types/types';
+import Image from 'next/image';
 
 interface ShowDetailProps {
   params: {
@@ -11,23 +13,22 @@ interface ShowDetailProps {
   };
 }
 
-interface ShowDetails {
-  title: string;
-  overview: string;
-}
 
 const ShowDetail: NextPage<ShowDetailProps> = ({ params }) => {
-  const [showDetails, setShowDetails] = useState<ShowDetails>({
-    title: '',
-    overview: ''
-  });
+  const [showDetails, setShowDetails] = useState<Show>(
+    {} as Show
+  );
   const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect(() => {
     async function loadData() {
       setIsLoading(true);
-      const data = await fetchShowDetails(params.id);
+      const data = await getSeriesFromApiCall(params.id);
+
+      if (!data) {
+        return;
+      }
       setShowDetails(data);
       setIsLoading(false);
     }
@@ -43,8 +44,8 @@ const ShowDetail: NextPage<ShowDetailProps> = ({ params }) => {
       <>
         <h1>Show: {params.id}</h1>
         <h2>Show details</h2>
-        <p>{showDetails.title}</p>
-        <p>{showDetails.overview}</p>
+        <p>{showDetails?.showName}</p>
+        <Image src={showDetails?.posterUrl} alt={showDetails?.showName} width={300} height={450} priority={false}/>
       </>
     )}
   </div>
