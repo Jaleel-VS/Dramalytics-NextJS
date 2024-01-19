@@ -15,7 +15,7 @@ export interface Show {
     episodes: Record<string, Episode[]>; 
 }
 
-export interface SearchResult {
+export interface SearchResultType {
     tmdb_id: string;
     title: string;
     year: string;
