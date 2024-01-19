@@ -1,3 +1,6 @@
+
+
+
 export interface Episode {
     id: number;
     name: string;
@@ -10,6 +13,14 @@ export interface Show {
     showName: string;
     posterUrl: string;
     episodes: Record<string, Episode[]>; 
+}
+
+export interface SearchResult {
+    tmdb_id: string;
+    title: string;
+    year: string;
+    poster: string;
+    voteAverage: number;
 }
 
 // export class EpisodeImpl implements Episode {
